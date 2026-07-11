@@ -1,0 +1,69 @@
+plugins {
+    id 'com.gradleup.shadow' version '8.3.6'
+    id 'java'
+}
+
+// Versioning
+def versionNumber = '0.0.1'
+def versionType = 'DEV' // RELEASE | BETA | ALPHA | DEV
+def versionMarker = versionType.charAt(0)
+
+group = 'it.italiandudes'
+version = versionNumber+versionMarker
+
+// Repository List
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+// Dependencies
+dependencies {
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.44'
+    annotationProcessor 'org.projectlombok:lombok:1.18.44'
+
+    compileOnly 'org.jetbrains:annotations:26.0.1'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'commons-io:commons-io:2.18.0'
+    implementation 'commons-codec:commons-codec:1.17.1'
+    implementation 'it.italiandudes:idl:1.4.0'
+    implementation 'org.json:json:20240303'
+    //noinspection VulnerableLibrariesLocal
+    implementation 'io.moquette:moquette-broker:0.17'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+}
+
+// Main Build Configuration
+shadowJar {
+    manifest {
+        attributes "Main-Class" : 'it.italiandudes.iiot_smartroom.IIoT_SmartRoom'
+        attributes "Title" : "IIoT-SmartRoom"
+        attributes "Vendor" : "ItalianDudes"
+        attributes "Version" : archiveVersion.get()
+        attributes "Version-Number" : archiveVersion.get()
+        attributes "Version-Type" : versionType
+        attributes "Version-Marker" : versionMarker
+        attributes "Timestamp" : new Date().format("dd/MM/yyyy HH:mm:ss.sss")
+        attributes "ID-Launcher-Enabled" : false
+    }
+    archiveFileName = getRootDir().getName() + "-" + archiveVersion.get() + ".jar"
+}
+
+// Dev Tasks
+tasks.register('buildJar') {
+    dependsOn shadowJar
+    group = "Build"
+    description = "Build and assemble the project for the current platform"
+}
+
+tasks.register('runClient', Exec) {
+    dependsOn buildJar
+    group = "Execution"
+    description = "Build, assemble and run the project for the current platform"
+    standardInput = System.in
+    commandLine "java", "-jar", jar.archiveFile.get()
+}
