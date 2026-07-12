@@ -1,7 +1,7 @@
-package it.italiandudes.iiot_smartroom.devices;
+package it.italiandudes.iiot_smartroom.mqtt.devices;
 
 import it.italiandudes.idl.logger.Logger;
-import it.italiandudes.iiot_smartroom.interfaces.ISimulatedSensor;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.utils.Defs;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public abstract class SimulatedMqttDevice {
@@ -46,6 +47,14 @@ public abstract class SimulatedMqttDevice {
         try {
             client.subscribe(topic, qos.ordinal(), (t, msg) ->
                     handler.accept(new String(msg.getPayload(), StandardCharsets.UTF_8)));
+        } catch (MqttException e) {
+            Logger.log(e, Defs.LOGGER_CONTEXT);
+        }
+    }
+    protected final void subscribe(@NotNull final String topic, @NotNull final MQTTQoS qos, @NotNull final BiConsumer<String, String> handler) {
+        try {
+            client.subscribe(topic, qos.ordinal(), (t, msg) ->
+                    handler.accept(topic, new String(msg.getPayload(), StandardCharsets.UTF_8)));
         } catch (MqttException e) {
             Logger.log(e, Defs.LOGGER_CONTEXT);
         }
