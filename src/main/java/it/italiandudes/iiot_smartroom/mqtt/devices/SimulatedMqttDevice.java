@@ -54,7 +54,7 @@ public abstract class SimulatedMqttDevice {
     protected final void subscribe(@NotNull final String topic, @NotNull final MQTTQoS qos, @NotNull final BiConsumer<String, String> handler) {
         try {
             client.subscribe(topic, qos.ordinal(), (t, msg) ->
-                    handler.accept(topic, new String(msg.getPayload(), StandardCharsets.UTF_8)));
+                    handler.accept(t, new String(msg.getPayload(), StandardCharsets.UTF_8)));
         } catch (MqttException e) {
             Logger.log(e, Defs.LOGGER_CONTEXT);
         }
