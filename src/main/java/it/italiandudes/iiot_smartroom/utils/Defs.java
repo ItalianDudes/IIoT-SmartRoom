@@ -15,6 +15,9 @@ public final class Defs {
     // App Name (This name must match the repository name)
     public static final String APP_NAME = "IIoT_SmartRoom";
 
+    // Debug Mode?
+    public static final boolean IS_DEBUG_MODE = true;
+
     // Smart Home Name
     public static final String SMART_ROOM_NAME = "SmartRoom6329";
 

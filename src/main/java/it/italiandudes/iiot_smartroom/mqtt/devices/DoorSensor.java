@@ -1,14 +1,16 @@
-package it.italiandudes.iiot_smartroom.devices;
+package it.italiandudes.iiot_smartroom.mqtt.devices;
 
-import it.italiandudes.iiot_smartroom.interfaces.ISimulatedSensor;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.mqtt.SenMLRecord;
 import it.italiandudes.iiot_smartroom.utils.DataGenerator;
+import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 
 public final class DoorSensor extends SimulatedMqttDevice implements ISimulatedSensor {
 
     // Constants
-    private static final String TOPIC = "room6329/door";
+    public static final String TOPIC = RoomDefs.SENSORS_TOPIC + "door";
+    public static final long SIMULATION_PERIOD_MILLIS = 1000;
 
     // Attributes
     private boolean isOpen = false;
@@ -20,12 +22,12 @@ public final class DoorSensor extends SimulatedMqttDevice implements ISimulatedS
 
     // Methods
     @Override
+    protected void onConnected() {
+        startSimulation(SIMULATION_PERIOD_MILLIS);
+    }
+    @Override
     public void simulateAndPublish() { // TODO: replace this with console/ui interaction
         isOpen = DataGenerator.randomBetween(0, 100) > 90;
-        String payload = SenMLRecord.builder(deviceId, "is_open")
-                .boolValue(isOpen)
-                .build()
-                .toJson();
-        publish(TOPIC, payload, MQTTQoS.QoS_1, true);
+        publish(TOPIC, SenMLRecord.builder(deviceId, "is_open").boolValue(isOpen).build().toJson(), MQTTQoS.QoS_1, false);
     }
 }

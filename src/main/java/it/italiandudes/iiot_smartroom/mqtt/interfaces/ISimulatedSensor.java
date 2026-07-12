@@ -1,4 +1,4 @@
-package it.italiandudes.iiot_smartroom.interfaces;
+package it.italiandudes.iiot_smartroom.mqtt.interfaces;
 
 public interface ISimulatedSensor {
     void simulateAndPublish();

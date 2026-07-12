@@ -1,20 +1,24 @@
-package it.italiandudes.iiot_smartroom.devices;
+package it.italiandudes.iiot_smartroom.mqtt.devices;
 
-import it.italiandudes.iiot_smartroom.interfaces.ISimulatedSensor;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.mqtt.SenMLRecord;
 import it.italiandudes.iiot_smartroom.simulation.DirectorVariables;
 import it.italiandudes.iiot_smartroom.utils.DataGenerator;
+import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 
 public final class EnvironmentalMonitoringSmartObject extends SimulatedMqttDevice implements ISimulatedSensor {
 
-    // Constants
-    public static final String TOPIC = "room6329/outside/";
+    // Topics
+    public static final String TOPIC = RoomDefs.ROOT_TOPIC + RoomDefs.SENSORS_TOPIC + "outside/";
     public static final String TOPIC_TEMPERATURE = TOPIC + "temperature";
     public static final String TOPIC_HUMIDITY = TOPIC + "humidity";
     public static final String TOPIC_PM10 = TOPIC + "pm10";
     public static final String TOPIC_WIND = TOPIC + "wind";
     public static final String TOPIC_RAIN = TOPIC + "rain";
+
+    // Simulation Period
+    public static final long SIMULATION_PERIOD_MILLIS = 1000;
 
     // Jitter Amplitudes
     private static final double TEMPERATURE_JITTER_MIN = 0.01;
@@ -50,14 +54,18 @@ public final class EnvironmentalMonitoringSmartObject extends SimulatedMqttDevic
 
     // Methods
     @Override
+    protected void onConnected() {
+        startSimulation(SIMULATION_PERIOD_MILLIS);
+    }
+    @Override
     public void simulateAndPublish() {
         genValues();
         long timestamp = System.currentTimeMillis() / 1000L;
-        publish(TOPIC_TEMPERATURE, singleMeasure(timestamp, "temperature", "Cel", temperature), MQTTQoS.QoS_0, false);
-        publish(TOPIC_HUMIDITY, singleMeasure(timestamp, "humidity", "%RH", humidity), MQTTQoS.QoS_0, false);
-        publish(TOPIC_PM10, singleMeasure(timestamp, "pm10", "ug/m3", pm10), MQTTQoS.QoS_0, false);
-        publish(TOPIC_WIND, singleMeasure(timestamp, "wind", "km/h", wind), MQTTQoS.QoS_0, false);
-        publish(TOPIC_RAIN, singleMeasure(timestamp, "rain", "mm", rain), MQTTQoS.QoS_0, false);
+        publish(TOPIC_TEMPERATURE, singleMeasure(timestamp, "temperature", "Cel", temperature), MQTTQoS.QoS_1, false);
+        publish(TOPIC_HUMIDITY, singleMeasure(timestamp, "humidity", "%RH", humidity), MQTTQoS.QoS_1, false);
+        publish(TOPIC_PM10, singleMeasure(timestamp, "pm10", "ug/m3", pm10), MQTTQoS.QoS_1, false);
+        publish(TOPIC_WIND, singleMeasure(timestamp, "wind", "km/h", wind), MQTTQoS.QoS_1, false);
+        publish(TOPIC_RAIN, singleMeasure(timestamp, "rain", "mm", rain), MQTTQoS.QoS_1, false);
     }
     private void genValues() {
         temperature = DataGenerator.Jitter.jitter(DirectorVariables.EXTERNAL_TEMPERATURE_CEL, TEMPERATURE_JITTER_MIN, TEMPERATURE_JITTER_MAX);

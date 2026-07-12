@@ -43,7 +43,7 @@ public abstract class SimulatedMqttDevice {
         onConnected();
     }
     protected void onConnected() {} // Can be overridden
-    protected final void subscribe(@NotNull final String topic, @NotNull final MQTTQoS qos, @NotNull final Consumer<String> handler) {
+    protected final void subscribe(@NotNull final String topic, @SuppressWarnings("SameParameterValue") @NotNull final MQTTQoS qos, @NotNull final Consumer<String> handler) {
         try {
             client.subscribe(topic, qos.ordinal(), (t, msg) ->
                     handler.accept(new String(msg.getPayload(), StandardCharsets.UTF_8)));
@@ -51,7 +51,7 @@ public abstract class SimulatedMqttDevice {
             Logger.log(e, Defs.LOGGER_CONTEXT);
         }
     }
-    protected final void subscribe(@NotNull final String topic, @NotNull final MQTTQoS qos, @NotNull final BiConsumer<String, String> handler) {
+    protected final void subscribe(@NotNull final String topic, @SuppressWarnings("SameParameterValue") @NotNull final MQTTQoS qos, @NotNull final BiConsumer<String, String> handler) {
         try {
             client.subscribe(topic, qos.ordinal(), (t, msg) ->
                     handler.accept(t, new String(msg.getPayload(), StandardCharsets.UTF_8)));
@@ -59,7 +59,7 @@ public abstract class SimulatedMqttDevice {
             Logger.log(e, Defs.LOGGER_CONTEXT);
         }
     }
-    protected final void publish(@NotNull final String topic, @NotNull final String payload, @NotNull final MQTTQoS qos, final boolean retained) {
+    protected final void publish(@NotNull final String topic, @NotNull final String payload, @SuppressWarnings("SameParameterValue") @NotNull final MQTTQoS qos, final boolean retained) {
         try {
             MqttMessage message = new MqttMessage(payload.getBytes(StandardCharsets.UTF_8));
             message.setQos(qos.ordinal());
@@ -76,12 +76,13 @@ public abstract class SimulatedMqttDevice {
             } catch (Exception e) {
                 Logger.log(e, Defs.LOGGER_CONTEXT);
             }
+            stopSimulation();
             client = null;
         }
     }
     public final void startSimulation(final long periodMillis) {
         if (!(this instanceof ISimulatedSensor)) return;
-        if (!scheduler.isShutdown()) stopSimulation();
+        if (scheduler.isShutdown()) return;
         scheduler.scheduleAtFixedRate(((ISimulatedSensor) this)::simulateAndPublish, 0, periodMillis, TimeUnit.MILLISECONDS);
     }
     public final void stopSimulation() {

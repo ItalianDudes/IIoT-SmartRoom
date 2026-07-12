@@ -1,7 +1,6 @@
-package it.italiandudes.iiot_smartroom.devices.data;
+package it.italiandudes.iiot_smartroom.mqtt.devices.data;
 
 public enum AirConditionerMode {
-    AUTO,
     DRY,
     COOL,
     HEAT,

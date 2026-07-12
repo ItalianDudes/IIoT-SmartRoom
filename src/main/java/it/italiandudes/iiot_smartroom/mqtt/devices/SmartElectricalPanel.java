@@ -1,17 +1,22 @@
-package it.italiandudes.iiot_smartroom.devices;
+package it.italiandudes.iiot_smartroom.mqtt.devices;
 
-import it.italiandudes.iiot_smartroom.interfaces.ISimulatedSensor;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.mqtt.SenMLRecord;
 import it.italiandudes.iiot_smartroom.simulation.DirectorVariables;
 import it.italiandudes.iiot_smartroom.utils.DataGenerator;
+import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 
 public final class SmartElectricalPanel extends SimulatedMqttDevice implements ISimulatedSensor {
 
     // Topics
-    public static final String TOPIC = "room6329/electrical_panel/";
-    public static final String TOPIC_ENERGY_CONSUMPTION = TOPIC + "energy_consumption";
-    public static final String TOPIC_IS_ON = TOPIC + "is_on";
+    public static final String TOPIC = RoomDefs.ROOT_TOPIC + "electrical_panel/";
+    public static final String TOPIC_ENERGY_CONSUMPTION = TOPIC + RoomDefs.SENSORS_TOPIC + "energy_consumption";
+    public static final String TOPIC_IS_ON = TOPIC + RoomDefs.STATES_TOPIC + "is_on";
+    public static final String TOPIC_IS_ON_SET = TOPIC + RoomDefs.ACTUATORS_TOPIC + "is_on";
+
+    // Simulation Period
+    public static final long SIMULATION_PERIOD_MILLIS = 1000;
 
     // Jitter Amplitudes
     private static final int ENERGY_CONSUMPTION_JITTER_MIN = 1;
@@ -27,9 +32,9 @@ public final class SmartElectricalPanel extends SimulatedMqttDevice implements I
 
     // Methods
     @Override
-    public void onConnected() {
-        subscribe(TOPIC_IS_ON + "/set", MQTTQoS.QoS_1, this::handleIsOnChange);
-        publish(TOPIC_IS_ON, SenMLRecord.builder(deviceId, "is_on").boolValue(isOn).build().toJson(), MQTTQoS.QoS_1, true);
+    protected void onConnected() {
+        startSimulation(SIMULATION_PERIOD_MILLIS);
+        subscribe(TOPIC_IS_ON_SET, MQTTQoS.QoS_1, this::handleIsOnChange);
     }
     private void handleIsOnChange(String payload) {
         try {

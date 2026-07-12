@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SenMLRecord {
+public final class SenMLRecord {
 
     // Attributes
     @Getter @NotNull private final String deviceId;
