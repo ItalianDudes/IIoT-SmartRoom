@@ -8,12 +8,16 @@ import it.italiandudes.iiot_smartroom.mqtt.devices.data.Weather;
 import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class DataCollectorAndManager extends SimulatedMqttDevice {
+
+    // Constants
+    public static final long DOOR_WINDOW_OPEN_CONDITIONER_OFF_MILLIS = 10000L;
 
     // Data Cache
     @Getter private boolean isDoorOpen = false;
@@ -31,6 +35,9 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
     @Getter private double conditionerTemperatureSetpoint = 25;
     @Getter private AirConditionerMode conditionerMode = AirConditionerMode.FAN;
     @Getter private Weather weather = Weather.CLEAR;
+    private long doorOpenTimestampMillis = -1;
+    private long windowOpenTimestampMillis = -1;
+    @Getter @Setter private volatile boolean conditionerDoorWindowOverride = false;
 
     // Constructor
     public DataCollectorAndManager(@NotNull String deviceId, @NotNull String brokerUrl) {
@@ -64,8 +71,18 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
         try {
             JSONObject jsonPayload = new JSONArray(rawPayload).getJSONObject(0);
             switch (topic) {
-                case DoorSensor.TOPIC -> isDoorOpen = jsonPayload.getBoolean("vb");
-                case WindowSensor.TOPIC -> isWindowOpen = jsonPayload.getBoolean("vb");
+                case DoorSensor.TOPIC -> {
+                    isDoorOpen = jsonPayload.getBoolean("vb");
+                    if (!conditionerDoorWindowOverride && isConditionerOn && isDoorOpen) {
+                        if (doorOpenTimestampMillis == -1) doorOpenTimestampMillis = System.currentTimeMillis();
+                    } else doorOpenTimestampMillis = -1;
+                }
+                case WindowSensor.TOPIC -> {
+                    isWindowOpen = jsonPayload.getBoolean("vb");
+                    if (!conditionerDoorWindowOverride && isConditionerOn && isWindowOpen) {
+                        if (windowOpenTimestampMillis == -1) windowOpenTimestampMillis = System.currentTimeMillis();
+                    } else windowOpenTimestampMillis = -1;
+                }
                 case SmartElectricalPanel.TOPIC_IS_ON -> isPowerOn = jsonPayload.getBoolean("vb");
                 case SmartElectricalPanel.TOPIC_ENERGY_CONSUMPTION -> energyConsumption = jsonPayload.getInt("v");
                 case SmartAirConditioner.TOPIC_HUMIDITY -> roomHumidity = jsonPayload.getDouble("v");
@@ -94,6 +111,10 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
                 default -> Logger.log("[WARN] Unhandled topic " + topic + ": " + jsonPayload.toString(), new InfoFlags(false, false, false, true), Defs.LOGGER_CONTEXT);
             }
             updateDisplay();
+            if ((doorOpenTimestampMillis > 0 && System.currentTimeMillis() - doorOpenTimestampMillis > DOOR_WINDOW_OPEN_CONDITIONER_OFF_MILLIS) ||
+                    (windowOpenTimestampMillis > 0 && System.currentTimeMillis() - windowOpenTimestampMillis > DOOR_WINDOW_OPEN_CONDITIONER_OFF_MILLIS)) {
+                shutdownAirConditioner();
+            }
         } catch (JSONException e) {
             Logger.log("[WARN] Invalid payload for topic " + topic + ": " + rawPayload, new InfoFlags(true, false, false, true), Defs.LOGGER_CONTEXT);
         }
@@ -112,6 +133,7 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
         updateAction.put("conditioner_on", isConditionerOn);
         updateAction.put("room_temperature", roomTemperature);
         updateAction.put("room_humidity", roomHumidity);
+        updateAction.put("override_door_window_sensors", conditionerDoorWindowOverride);
         updateAction.put("conditioner_setpoint_temperature", conditionerTemperatureSetpoint);
         updateAction.put("conditioner_mode", conditionerMode);
         updateAction.put("weather", weather.name());
@@ -126,6 +148,13 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
             weather =  Weather.RAIN;
         } else {
             weather =  Weather.CLEAR;
+        }
+    }
+    private void shutdownAirConditioner() {
+        doorOpenTimestampMillis = -1;
+        windowOpenTimestampMillis = -1;
+        if (isConditionerOn) {
+            publish(SmartAirConditioner.TOPIC_ENVIRONMENT_OPEN, "{\"environment_open\":true}", MQTTQoS.QoS_1, false);
         }
     }
 }

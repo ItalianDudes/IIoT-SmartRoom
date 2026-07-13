@@ -23,6 +23,7 @@
                   <Tab fx:id="tabEnvironmentalMonitoring" text="Esterno" />
                   <Tab fx:id="tabConditioner" text="Condizionatore" />
                   <Tab fx:id="tabElectricalPanel" text="Pannello Elettrico" />
+                  <Tab fx:id="tabDCM" text="Data Collector And Management" />
                   <Tab fx:id="tabSettings" text="Impostazioni" />
                </tabs>
             </TabPane>

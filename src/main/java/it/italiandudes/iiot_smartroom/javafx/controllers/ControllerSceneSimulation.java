@@ -40,21 +40,14 @@ public final class ControllerSceneSimulation {
     @Getter private volatile boolean simulationReady = false;
 
     // Scene Controllers
-    private ControllerSceneSimulationTabDoor controllerDoor = null;
-    private ControllerSceneSimulationTabWindow controllerWindow = null;
-    private ControllerSceneSimulationTabEnvironmentalMonitor controllerEnvironmentalMonitor = null;
-    private ControllerSceneSimulationTabAirConditioner controllerAirConditioner = null;
-    private ControllerSceneSimulationTabElectricalPanel controllerElectricalPanel = null;
-    private ControllerSceneSimulationTabDisplay controllerDisplay = null;
-    private ControllerSceneSimulationTabSettings controllerSettings = null;
-
-    // Controller Providers
-    public @NotNull ControllerSceneSimulationTabDoor getControllerDoor() {
-        return controllerDoor;
-    }
-    public @NotNull ControllerSceneSimulationTabSettings getControllerSettings() {
-        return controllerSettings;
-    }
+    @Getter private ControllerSceneSimulationTabDoor controllerDoor = null;
+    @Getter private ControllerSceneSimulationTabWindow controllerWindow = null;
+    @Getter private ControllerSceneSimulationTabEnvironmentalMonitor controllerEnvironmentalMonitor = null;
+    @Getter private ControllerSceneSimulationTabAirConditioner controllerAirConditioner = null;
+    @Getter private ControllerSceneSimulationTabElectricalPanel controllerElectricalPanel = null;
+    @Getter private ControllerSceneSimulationTabDisplay controllerDisplay = null;
+    @Getter private ControllerSceneSimulationTabDCM controllerDCM = null;
+    @Getter private ControllerSceneSimulationTabSettings controllerSettings = null;
 
     // Methods
     public void shutdownMQTT() {
@@ -85,7 +78,7 @@ public final class ControllerSceneSimulation {
     @FXML private Tab tabDisplay;
     @FXML private Tab tabConditioner;
     @FXML private Tab tabElectricalPanel;
-    @FXML private Tab tabDirector;
+    @FXML private Tab tabDCM;
     @FXML private Tab tabSettings;
 
     // Initialize
@@ -150,6 +143,10 @@ public final class ControllerSceneSimulation {
                 SceneController sceneControllerElectricalPanel = SceneSimulationTabElectricalPanel.getScene(dcm);
                 controllerElectricalPanel = (ControllerSceneSimulationTabElectricalPanel) sceneControllerElectricalPanel.getController();
                 tabElectricalPanel.setContent(sceneControllerElectricalPanel.getParent());
+
+                SceneController sceneControllerDCM = SceneSimulationTabDCM.getScene(dcm);
+                controllerDCM = (ControllerSceneSimulationTabDCM) sceneControllerDCM.getController();
+                tabDCM.setContent(sceneControllerDCM.getParent());
 
                 SceneController sceneControllerSettings = SceneSimulationTabSettings.getScene(this);
                 controllerSettings = (ControllerSceneSimulationTabSettings) sceneControllerSettings.controller();

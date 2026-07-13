@@ -9,6 +9,8 @@ import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.iiot_smartroom.utils.DataGenerator;
 import it.italiandudes.iiot_smartroom.simulation.DirectorVariables;
 import it.italiandudes.iiot_smartroom.utils.RoomDefs;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public final class SmartAirConditioner extends SimulatedMqttDevice implements ISimulatedSensor {
 
@@ -22,6 +24,7 @@ public final class SmartAirConditioner extends SimulatedMqttDevice implements IS
     public static final String TOPIC_SETPOINT_TEMPERATURE_SET = TOPIC + RoomDefs.ACTUATORS_TOPIC + "setpoint_temperature";
     public static final String TOPIC_MODE_SET = TOPIC + RoomDefs.ACTUATORS_TOPIC + "mode";
     public static final String TOPIC_IS_ON_SET = TOPIC + RoomDefs.ACTUATORS_TOPIC + "is_on";
+    public static final String TOPIC_ENVIRONMENT_OPEN = TOPIC + RoomDefs.ACTUATORS_TOPIC + "environment_open";
 
     // Simulation Period
     public static final long SIMULATION_PERIOD_MILLIS = 1000;
@@ -59,6 +62,17 @@ public final class SmartAirConditioner extends SimulatedMqttDevice implements IS
         subscribe(TOPIC_SETPOINT_TEMPERATURE_SET, MQTTQoS.QoS_1, this::handleTargetTempChange);
         subscribe(TOPIC_MODE_SET, MQTTQoS.QoS_1, this::handleModeChange);
         subscribe(TOPIC_IS_ON_SET, MQTTQoS.QoS_1, this::handleIsOnChange);
+        subscribe(TOPIC_ENVIRONMENT_OPEN, MQTTQoS.QoS_1, this::handleEnvironmentOpen);
+    }
+    private void handleEnvironmentOpen(String payload) {
+        try {
+            if (new JSONObject(payload).getBoolean("environment_open")) {
+                isOn = false;
+                publish(TOPIC_IS_ON, SenMLRecord.builder(deviceId, "is_on").boolValue(isOn).build().toJson(), MQTTQoS.QoS_1, true);
+            }
+        } catch (JSONException e) {
+            Logger.log(e, Defs.LOGGER_CONTEXT);
+        }
     }
     private void handleTargetTempChange(String payload) {
         try {

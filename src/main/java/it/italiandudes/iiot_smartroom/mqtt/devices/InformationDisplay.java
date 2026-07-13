@@ -33,6 +33,7 @@ public final class InformationDisplay extends SimulatedMqttDevice {
         try {
             JSONObject payloadJSON = new JSONObject(payload);
             @SuppressWarnings("StringBufferReplaceableByString") StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.append("Override Sensori Porta/Finestra per Climatizzatore: ").append(payloadJSON.getBoolean("override_door_window_sensors") ? "ATTIVO" : "DISATTIVO").append('\n');
             messageBuilder.append("Stato Porta: ").append(payloadJSON.getBoolean("door_open") ? "APERTA" : "CHIUSA").append('\n');
             messageBuilder.append("Stato Finestra: ").append(payloadJSON.getBoolean("window_open") ? "APERTA" : "CHIUSA").append('\n');
             messageBuilder.append("Pannello Elettrico:").append('\n')

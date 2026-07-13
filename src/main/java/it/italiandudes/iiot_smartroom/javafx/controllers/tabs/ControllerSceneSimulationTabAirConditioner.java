@@ -68,6 +68,10 @@ public final class ControllerSceneSimulationTabAirConditioner {
                     cacheMode = dcm.getConditionerMode();
                     cacheIsOn = dcm.isConditionerOn();
                     Platform.runLater(() -> {
+                        if (!dcm.isConditionerOn() && toggleButtonIsOn.isSelected()) {
+                            toggleButtonIsOn.setText("SPENTO");
+                            toggleButtonIsOn.setSelected(false);
+                        }
                         labelSensorTemperature.setText(RoomDefs.DECIMAL_FORMATTER.format(cacheTemperature));
                         labelSensorHumidity.setText(RoomDefs.DECIMAL_FORMATTER.format(cacheHumidity));
                         labelSetpointTemperature.setText(RoomDefs.DECIMAL_FORMATTER.format(cacheSetpointTemperature));
@@ -107,6 +111,11 @@ public final class ControllerSceneSimulationTabAirConditioner {
     }
     @FXML
     private void applyIsOn() {
+        if (!dcm.isConditionerDoorWindowOverride() && (dcm.isDoorOpen() || dcm.isWindowOpen())) {
+            toggleButtonIsOn.setSelected(!toggleButtonIsOn.isSelected());
+            new ErrorAlert(Client.getStage(), "ERRORE", "Azione Bloccata", "Impossibile accendere il climatizzatore finche' la porta o la finestra sono aperte.\nPer disattivare questa limitazione attivare l'override dei sensori porta/finestra dal DCM.");
+            return;
+        }
         toggleButtonIsOn.setText(toggleButtonIsOn.isSelected() ? "ACCESO" : "SPENTO");
         JFXUtils.startVoidServiceTask(() -> dcm.actionChangeConditionerOnOff(toggleButtonIsOn.isSelected()));
     }

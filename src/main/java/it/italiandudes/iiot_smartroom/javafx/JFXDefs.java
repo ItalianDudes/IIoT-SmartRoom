@@ -38,7 +38,7 @@ public final class JFXDefs {
                 public static final String TAB_DISPLAY = TABS_DIR + "SceneSimulationTabDisplay.fxml";
                 public static final String TAB_CONDITIONER = TABS_DIR + "SceneSimulationTabAirConditioner.fxml";
                 public static final String TAB_ELECTRICAL_PANEL = TABS_DIR + "SceneSimulationTabElectricalPanel.fxml";
-                public static final String TAB_DIRECTOR = TABS_DIR + "SceneSimulationTabDirector.fxml";
+                public static final String TAB_DCM = TABS_DIR + "SceneSimulationTabDCM.fxml";
                 public static final String TAB_SETTINGS = TABS_DIR + "SceneSimulationTabSettings.fxml";
             }
         }
