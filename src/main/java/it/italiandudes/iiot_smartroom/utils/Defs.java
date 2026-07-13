@@ -1,7 +1,9 @@
 package it.italiandudes.iiot_smartroom.utils;
 
+import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.iiot_smartroom.IIoT_SmartRoom;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.InputStream;
@@ -15,8 +17,11 @@ public final class Defs {
     // App Name (This name must match the repository name)
     public static final String APP_NAME = "IIoT_SmartRoom";
 
+    // Current Platform
+    @Nullable public static final TargetPlatform CURRENT_PLATFORM = TargetPlatform.getCurrentPlatform();
+
     // Debug Mode?
-    public static final boolean IS_DEBUG_MODE = true;
+    public static final boolean IS_DEBUG_MODE = false;
 
     // Smart Home Name
     public static final String SMART_ROOM_NAME = "SmartRoom6329";
@@ -36,6 +41,7 @@ public final class Defs {
 
     // JSON Settings
     public static final class SettingsKeys {
+        public static final String BROKER_PORT = "broker_port";
     }
 
     // Resources Location
@@ -54,8 +60,8 @@ public final class Defs {
 
         // JSON
         public static final class JSON {
-            public static final String CLIENT_SETTINGS = "settings.json";
-            public static final String DEFAULT_JSON_SETTINGS = PROJECT_RESOURCES_ROOT + "json/" + CLIENT_SETTINGS;
+            public static final String SETTINGS = "settings.json";
+            public static final String DEFAULT_JSON_SETTINGS = PROJECT_RESOURCES_ROOT + "json/" + SETTINGS;
         }
     }
 }

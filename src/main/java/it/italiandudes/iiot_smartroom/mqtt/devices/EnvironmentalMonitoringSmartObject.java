@@ -10,7 +10,7 @@ import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 public final class EnvironmentalMonitoringSmartObject extends SimulatedMqttDevice implements ISimulatedSensor {
 
     // Topics
-    public static final String TOPIC = RoomDefs.ROOT_TOPIC + RoomDefs.SENSORS_TOPIC + "outside/";
+    public static final String TOPIC = RoomDefs.ROOT_TOPIC + "outside/" + RoomDefs.SENSORS_TOPIC;
     public static final String TOPIC_TEMPERATURE = TOPIC + "temperature";
     public static final String TOPIC_HUMIDITY = TOPIC + "humidity";
     public static final String TOPIC_PM10 = TOPIC + "pm10";

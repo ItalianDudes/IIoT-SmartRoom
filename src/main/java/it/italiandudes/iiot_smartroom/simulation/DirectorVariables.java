@@ -8,12 +8,14 @@ package it.italiandudes.iiot_smartroom.simulation;
 public final class DirectorVariables {
 
     // External Data
-    public static final double EXTERNAL_TEMPERATURE_CEL = 26.0;
-    public static final double EXTERNAL_HUMIDITY_RH = 60.0;
-    public static final double WIND_SPEED_KMH = 0.0;
-    public static final double RAIN_VOLUME_MM = 0.0;
-    public static final int PM10_UG_M3 = 0;
+    public static volatile double EXTERNAL_TEMPERATURE_CEL = 26.0;
+    public static volatile double EXTERNAL_HUMIDITY_RH = 60.0;
+    public static volatile double WIND_SPEED_KMH = 0.0;
+    public static volatile double RAIN_VOLUME_MM = 0.0;
+    public static volatile int PM10_UG_M3 = 0;
 
     // Room Data
-    public static final int ENERGY_CONSUMPTION_W = 720;
+    public static volatile int ENERGY_CONSUMPTION_W = 720;
+    public static volatile boolean IS_DOOR_OPEN = false;
+    public static volatile boolean IS_WINDOW_OPEN = false;
 }

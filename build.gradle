@@ -1,11 +1,13 @@
 plugins {
     id 'com.gradleup.shadow' version '8.3.6'
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 // Versioning
-def versionNumber = '0.0.1'
-def versionType = 'DEV' // RELEASE | BETA | ALPHA | DEV
+def versionNumber = '0.1.0'
+def versionType = 'BETA' // RELEASE | BETA | ALPHA | DEV
 def versionMarker = versionType.charAt(0)
 
 group = 'it.italiandudes'
@@ -17,6 +19,19 @@ repositories {
     flatDir {
         dirs 'lib'
     }
+}
+
+// JavaFX Configuration
+javafx {
+    version = "21.0.10"
+    modules = [
+            'javafx.base',
+            'javafx.controls',
+            'javafx.graphics',
+            'javafx.fxml',
+            'javafx.swing',
+            'javafx.media'
+    ]
 }
 
 // Dependencies
@@ -39,8 +54,9 @@ dependencies {
 
 // Main Build Configuration
 shadowJar {
+    mainClassName = 'it.italiandudes.iiot_smartroom.IIoT_SmartRoom'
     manifest {
-        attributes "Main-Class" : 'it.italiandudes.iiot_smartroom.IIoT_SmartRoom'
+        attributes "Main-Class" : mainClassName
         attributes "Title" : "IIoT-SmartRoom"
         attributes "Vendor" : "ItalianDudes"
         attributes "Version" : archiveVersion.get()
@@ -66,4 +82,61 @@ tasks.register('runClient', Exec) {
     description = "Build, assemble and run the project for the current platform"
     standardInput = System.in
     commandLine "java", "-jar", jar.archiveFile.get()
+}
+
+// Deployment Tasks
+tasks.register('deployJarForLinux') {
+    def platform = 'linux'
+    javafx.platform = platform
+    shadowJar {
+        manifest {
+            attributes "Target-Platform": platform
+        }
+        archiveFileName = getRootDir().getName() + "-" + archiveVersion.get() + "-" + platform.toUpperCase() + ".jar"
+    }
+    dependsOn shadowJar
+    group = "Build"
+    description = "Deploy for " + platform
+}
+
+tasks.register('deployJarForWindows') {
+    def platform = 'windows'
+    javafx.platform = platform
+    shadowJar {
+        manifest {
+            attributes "Target-Platform": platform
+        }
+        archiveFileName = getRootDir().getName() + "-" + archiveVersion.get() + "-" + platform.toUpperCase() + ".jar"
+    }
+    dependsOn shadowJar
+    group = "Build"
+    description = "Deploy for " + platform
+}
+
+tasks.register('deployJarForMac') {
+    def platform = 'mac'
+    javafx.platform = platform
+    shadowJar {
+        manifest {
+            attributes "Target-Platform": platform
+        }
+        archiveFileName = getRootDir().getName() + "-" + archiveVersion.get() + "-" + platform.toUpperCase() + ".jar"
+    }
+    dependsOn shadowJar
+    group = "Build"
+    description = "Deploy for " + platform
+}
+
+tasks.register('deployJarForMacAArch64') {
+    def platform = 'mac-aarch64'
+    javafx.platform = platform
+    shadowJar {
+        manifest {
+            attributes "Target-Platform": platform
+        }
+        archiveFileName = getRootDir().getName() + "-" + archiveVersion.get() + "-" + platform.toUpperCase() + ".jar"
+    }
+    dependsOn shadowJar
+    group = "Build"
+    description = "Deploy for " + platform
 }

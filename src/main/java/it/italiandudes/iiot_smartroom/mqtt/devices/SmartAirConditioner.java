@@ -102,11 +102,15 @@ public final class SmartAirConditioner extends SimulatedMqttDevice implements IS
 
         switch (mode) {
             case HEAT -> {
-                temperature = DataGenerator.increaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature);
+                if (temperature < setpointTemperature) temperature = DataGenerator.increaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature);
+                else if (temperature > setpointTemperature) temperature = DataGenerator.driftTowards(temperature, DirectorVariables.EXTERNAL_TEMPERATURE_CEL, TEMPERATURE_PASSIVE_MIN_STEP, TEMPERATURE_PASSIVE_MAX_STEP);
+                else temperature = DataGenerator.Jitter.jitter(setpointTemperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature - 0.05, setpointTemperature + 0.05);
                 humidity = DataGenerator.Jitter.approachAndSettleAtFloor(humidity, HUMIDITY_ACTIVE_MIN_STEP, HUMIDITY_ACTIVE_MAX_STEP, RoomDefs.IDEAL_ROOM_HUMIDITY);
             }
             case COOL -> {
-                temperature = DataGenerator.decreaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature);
+                if (temperature > setpointTemperature) temperature = DataGenerator.decreaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature);
+                else if (temperature < setpointTemperature) temperature = DataGenerator.driftTowards(temperature, DirectorVariables.EXTERNAL_TEMPERATURE_CEL, TEMPERATURE_PASSIVE_MIN_STEP, TEMPERATURE_PASSIVE_MAX_STEP);
+                else temperature = DataGenerator.Jitter.jitter(setpointTemperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, setpointTemperature - 0.05, setpointTemperature + 0.05);
                 humidity = DataGenerator.Jitter.approachAndSettleAtFloor(humidity, HUMIDITY_ACTIVE_MIN_STEP, HUMIDITY_ACTIVE_MAX_STEP, RoomDefs.IDEAL_ROOM_HUMIDITY);
             }
             case DRY -> {
@@ -114,7 +118,9 @@ public final class SmartAirConditioner extends SimulatedMqttDevice implements IS
                 humidity = DataGenerator.Jitter.approachAndSettleAtFloor(humidity, HUMIDITY_ACTIVE_MIN_STEP * 2, HUMIDITY_ACTIVE_MAX_STEP * 2, RoomDefs.IDEAL_ROOM_HUMIDITY);
             }
             case ECO -> {
-                temperature = DataGenerator.decreaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, ECO_SETPOINT_TEMPERATURE);
+                if (temperature > ECO_SETPOINT_TEMPERATURE) temperature = DataGenerator.decreaseValueTowards(temperature, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, ECO_SETPOINT_TEMPERATURE);
+                else if (temperature < ECO_SETPOINT_TEMPERATURE) temperature = DataGenerator.driftTowards(temperature, DirectorVariables.EXTERNAL_TEMPERATURE_CEL, TEMPERATURE_PASSIVE_MIN_STEP, TEMPERATURE_PASSIVE_MAX_STEP);
+                else temperature = DataGenerator.Jitter.jitter(ECO_SETPOINT_TEMPERATURE, TEMPERATURE_ACTIVE_MIN_STEP, TEMPERATURE_ACTIVE_MAX_STEP, ECO_SETPOINT_TEMPERATURE - 0.05, ECO_SETPOINT_TEMPERATURE + 0.05);
                 humidity = DataGenerator.Jitter.approachAndSettleAtFloor(humidity, HUMIDITY_ACTIVE_MIN_STEP, HUMIDITY_ACTIVE_MAX_STEP, RoomDefs.IDEAL_ROOM_HUMIDITY);
             }
         }

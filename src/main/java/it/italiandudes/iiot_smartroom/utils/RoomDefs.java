@@ -1,5 +1,7 @@
 package it.italiandudes.iiot_smartroom.utils;
 
+import java.text.DecimalFormat;
+
 public final class RoomDefs {
 
     // Arbitrary Room Humidity Constants
@@ -10,4 +12,5 @@ public final class RoomDefs {
     public static final String TOPIC_ALL_SENSORS = ROOT_TOPIC + "+/" + SENSORS_TOPIC + "#";
     public static final String TOPIC_ALL_STATES = ROOT_TOPIC + "+/" + STATES_TOPIC + "#";
     public static final double IDEAL_ROOM_HUMIDITY = 45;
+    public static final DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#.###");
 }

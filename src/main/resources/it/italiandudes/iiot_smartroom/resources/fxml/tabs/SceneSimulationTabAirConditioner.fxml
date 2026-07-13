@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--suppress JavaFxDefaultTag -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" styleClass="transparent-scroll-pane" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.iiot_smartroom.javafx.controllers.tabs.ControllerSceneSimulationTabAirConditioner">
+   <content>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <GridPane alignment="CENTER" hgap="5.0" layoutX="10.0" layoutY="578.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                  <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+               </rowConstraints>
+               <children>
+                  <Label styleClass="title" text="Sensori">
+                  </Label>
+                  <Label styleClass="title" text="Direttore" GridPane.columnIndex="2">
+                  </Label>
+                  <GridPane hgap="10.0" vgap="5.0" GridPane.rowIndex="1">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
+                        <Label styleClass="data-label" text="Temperatura Stanza [°C]:" GridPane.rowIndex="1">
+                        </Label>
+                        <Label styleClass="data-label" text="Umidita' Stanza [RH%]:" GridPane.rowIndex="2">
+                        </Label>
+                        <Label styleClass="data-label" text="Temperatura Obiettivo [°C]:" GridPane.rowIndex="3">
+                        </Label>
+                        <Label styleClass="data-label" text="Modalita':" GridPane.rowIndex="4">
+                        </Label>
+                        <Label styleClass="data-label" text="Acceso?">
+                        </Label>
+                        <Label fx:id="labelSensorTemperature" styleClass="data-label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        </Label>
+                        <Label fx:id="labelSensorHumidity" styleClass="data-label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        </Label>
+                        <Label fx:id="labelSetpointTemperature" styleClass="data-label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        </Label>
+                        <Label fx:id="labelMode" styleClass="data-label" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        </Label>
+                        <Circle fx:id="circleIsOn" fill="#ff1f1f" radius="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <GridPane hgap="10.0" vgap="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                        <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
+                        <Label styleClass="data-label" text="Temperatura [°C]:">
+                        </Label>
+                        <Label styleClass="data-label" text="Modalita':" GridPane.rowIndex="1">
+                        </Label>
+                        <Label styleClass="data-label" text="Stato Condizionatore:" GridPane.rowIndex="2">
+                        </Label>
+                        <TextField fx:id="textFieldSetpointTemperature" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Temperatura Obiettivo" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </TextField>
+                        <Button fx:id="buttonApplySetpointTemperature" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#applySetpointTemperature" text="APPLICA" GridPane.columnIndex="2">
+                           <font>
+                              <Font name="Consolas Bold" size="20.0" />
+                           </font>
+                        </Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#applyMode" text="APPLICA" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Consolas Bold" size="20.0" />
+                           </font>
+                        </Button>
+                        <ComboBox fx:id="comboBoxMode" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ToggleButton fx:id="toggleButtonIsOn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#applyIsOn" text="SPENTO" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

@@ -69,6 +69,9 @@ public abstract class SimulatedMqttDevice {
             Logger.log(e, Defs.LOGGER_CONTEXT);
         }
     }
+    public final boolean isConnected() {
+        return client != null && client.isConnected();
+    }
     public final void disconnect() {
         if (client != null) {
             try {

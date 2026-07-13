@@ -7,6 +7,7 @@ import it.italiandudes.iiot_smartroom.mqtt.devices.data.AirConditionerMode;
 import it.italiandudes.iiot_smartroom.mqtt.devices.data.Weather;
 import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.iiot_smartroom.utils.RoomDefs;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,21 +16,21 @@ import org.json.JSONObject;
 public final class DataCollectorAndManager extends SimulatedMqttDevice {
 
     // Data Cache
-    private boolean isDoorOpen = false;
-    private boolean isWindowOpen = false;
-    private boolean isPowerOn = false;
-    private boolean isConditionerOn = false;
-    private double externalTemperature = 0;
-    private double externalHumidity = 0;
-    private double pm10 = 0;
-    private double wind = 0;
-    private double rain = 0;
-    private int energyConsumption = 0;
-    private double roomTemperature = 0;
-    private double roomHumidity = 0;
-    private double conditionerTemperatureSetpoint = 0;
-    private AirConditionerMode conditionerMode = AirConditionerMode.FAN;
-    private Weather weather = Weather.CLEAR;
+    @Getter private boolean isDoorOpen = false;
+    @Getter private boolean isWindowOpen = false;
+    @Getter private boolean isPowerOn = false;
+    @Getter private boolean isConditionerOn = false;
+    @Getter private double externalTemperature = 30;
+    @Getter private double externalHumidity = 65;
+    @Getter private int pm10 = 0;
+    @Getter private double wind = 0;
+    @Getter private double rain = 0;
+    @Getter private int energyConsumption = 0;
+    @Getter private double roomTemperature = 25;
+    @Getter private double roomHumidity = 45;
+    @Getter private double conditionerTemperatureSetpoint = 25;
+    @Getter private AirConditionerMode conditionerMode = AirConditionerMode.FAN;
+    @Getter private Weather weather = Weather.CLEAR;
 
     // Constructor
     public DataCollectorAndManager(@NotNull String deviceId, @NotNull String brokerUrl) {
@@ -42,6 +43,22 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
         subscribe(RoomDefs.TOPIC_ALL_SENSORS, MQTTQoS.QoS_1, this::handleData);
         subscribe(RoomDefs.TOPIC_ALL_STATES, MQTTQoS.QoS_1, this::handleData);
     }
+    public void actionChangeAirConditionerMode(@NotNull final AirConditionerMode mode) {
+        if (conditionerMode == mode) return;
+        publish(SmartAirConditioner.TOPIC_MODE_SET, mode.name(), MQTTQoS.QoS_1, true);
+    }
+    public void actionChangeSetpointTemperature(final double temperature) {
+        if (temperature == conditionerTemperatureSetpoint) return;
+        publish(SmartAirConditioner.TOPIC_SETPOINT_TEMPERATURE_SET, String.valueOf(temperature), MQTTQoS.QoS_1, true);
+    }
+    public void actionChangeConditionerOnOff(final boolean newState) {
+        if (newState == isConditionerOn) return;
+        publish(SmartAirConditioner.TOPIC_IS_ON_SET, String.valueOf(newState), MQTTQoS.QoS_1, true);
+    }
+    public void actionChangeElectricalPanelOnOff(final boolean newState) {
+        if (newState == isPowerOn) return;
+        publish(SmartElectricalPanel.TOPIC_IS_ON_SET, String.valueOf(newState), MQTTQoS.QoS_1, true);
+    }
     private void handleData(String topic, String rawPayload) {
         if (topic == null || rawPayload == null) return;
         try {
@@ -53,7 +70,7 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
                 case SmartElectricalPanel.TOPIC_ENERGY_CONSUMPTION -> energyConsumption = jsonPayload.getInt("v");
                 case SmartAirConditioner.TOPIC_HUMIDITY -> roomHumidity = jsonPayload.getDouble("v");
                 case SmartAirConditioner.TOPIC_TEMPERATURE -> roomTemperature = jsonPayload.getDouble("v");
-                case SmartAirConditioner.TOPIC_IS_ON -> isConditionerOn = jsonPayload.getBoolean("v");
+                case SmartAirConditioner.TOPIC_IS_ON -> isConditionerOn = jsonPayload.getBoolean("vb");
                 case SmartAirConditioner.TOPIC_SETPOINT_TEMPERATURE -> conditionerTemperatureSetpoint = jsonPayload.getDouble("v");
                 case EnvironmentalMonitoringSmartObject.TOPIC_HUMIDITY -> externalHumidity = jsonPayload.getDouble("v");
                 case EnvironmentalMonitoringSmartObject.TOPIC_TEMPERATURE -> externalTemperature = jsonPayload.getDouble("v");
@@ -103,9 +120,9 @@ public final class DataCollectorAndManager extends SimulatedMqttDevice {
     private void aggregateExternalWeatherData() {
         if (wind > Weather.STORM.windThreshold && rain > Weather.STORM.rainThreshold) {
             weather = Weather.STORM;
-        } else if (wind > Weather.WINDY.windThreshold && rain < Weather.WINDY.rainThreshold) {
+        } else if (wind > Weather.WINDY.windThreshold) {
             weather =  Weather.WINDY;
-        } else if (wind < Weather.RAIN.windThreshold && rain > Weather.RAIN.rainThreshold) {
+        } else if (rain > Weather.RAIN.rainThreshold) {
             weather =  Weather.RAIN;
         } else {
             weather =  Weather.CLEAR;

@@ -23,7 +23,7 @@ public final class SmartElectricalPanel extends SimulatedMqttDevice implements I
     private static final int ENERGY_CONSUMPTION_JITTER_MAX = 5;
 
     // Attributes
-    private boolean isOn = true;
+    private boolean isOn = false;
 
     // Constructors
     public SmartElectricalPanel(String deviceId, String brokerUrl) {
