@@ -1,8 +1,8 @@
 package it.italiandudes.iiot_smartroom.mqtt.devices;
 
-import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.mqtt.SenMLRecord;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.simulation.DirectorVariables;
 import it.italiandudes.iiot_smartroom.utils.DataGenerator;
 import it.italiandudes.iiot_smartroom.utils.RoomDefs;

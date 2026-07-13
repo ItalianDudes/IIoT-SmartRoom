@@ -3,20 +3,10 @@
 <!--suppress JavaFxDefaultTag -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-
 <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="transparent-scroll-pane" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.iiot_smartroom.javafx.controllers.tabs.ControllerSceneSimulationTabAirConditioner">
    <content>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">

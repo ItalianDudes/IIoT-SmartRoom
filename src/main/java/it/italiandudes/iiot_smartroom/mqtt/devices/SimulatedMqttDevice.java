@@ -1,8 +1,8 @@
 package it.italiandudes.iiot_smartroom.mqtt.devices;
 
 import it.italiandudes.idl.logger.Logger;
-import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.utils.Defs;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;

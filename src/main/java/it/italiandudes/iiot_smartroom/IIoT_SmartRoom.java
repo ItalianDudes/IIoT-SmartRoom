@@ -2,11 +2,10 @@ package it.italiandudes.iiot_smartroom;
 
 import it.italiandudes.idl.common.TargetPlatform;
 import it.italiandudes.idl.handler.JarHandler;
-import it.italiandudes.iiot_smartroom.javafx.Client;
-import it.italiandudes.iiot_smartroom.mqtt.devices.*;
-import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.idl.logger.InfoFlags;
 import it.italiandudes.idl.logger.Logger;
+import it.italiandudes.iiot_smartroom.javafx.Client;
+import it.italiandudes.iiot_smartroom.utils.Defs;
 import org.apache.commons.lang3.SystemUtils;
 import org.jetbrains.annotations.Nullable;
 

@@ -3,11 +3,8 @@
 <!--suppress JavaFxDefaultTag -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/21.0.10" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.italiandudes.iiot_smartroom.javafx.controllers.ControllerSceneSimulation">
    <content>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">

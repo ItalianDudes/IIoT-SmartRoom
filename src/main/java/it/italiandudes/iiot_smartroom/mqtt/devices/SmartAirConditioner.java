@@ -1,13 +1,13 @@
 package it.italiandudes.iiot_smartroom.mqtt.devices;
 
 import it.italiandudes.idl.logger.Logger;
-import it.italiandudes.iiot_smartroom.mqtt.devices.data.AirConditionerMode;
-import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.mqtt.MQTTQoS;
 import it.italiandudes.iiot_smartroom.mqtt.SenMLRecord;
-import it.italiandudes.iiot_smartroom.utils.Defs;
-import it.italiandudes.iiot_smartroom.utils.DataGenerator;
+import it.italiandudes.iiot_smartroom.mqtt.devices.data.AirConditionerMode;
+import it.italiandudes.iiot_smartroom.mqtt.interfaces.ISimulatedSensor;
 import it.italiandudes.iiot_smartroom.simulation.DirectorVariables;
+import it.italiandudes.iiot_smartroom.utils.DataGenerator;
+import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.iiot_smartroom.utils.RoomDefs;
 import org.json.JSONException;
 import org.json.JSONObject;

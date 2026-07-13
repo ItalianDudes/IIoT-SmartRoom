@@ -1,9 +1,9 @@
 package it.italiandudes.iiot_smartroom.javafx.utils;
 
-import it.italiandudes.iiot_smartroom.utils.Defs;
 import it.italiandudes.idl.handler.JarHandler;
 import it.italiandudes.idl.json.JSONManager;
 import it.italiandudes.idl.logger.Logger;
+import it.italiandudes.iiot_smartroom.utils.Defs;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;

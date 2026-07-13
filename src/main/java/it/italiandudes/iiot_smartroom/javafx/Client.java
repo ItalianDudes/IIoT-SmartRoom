@@ -1,12 +1,12 @@
 package it.italiandudes.iiot_smartroom.javafx;
 
+import it.italiandudes.idl.javafx.alert.ErrorAlert;
+import it.italiandudes.idl.javafx.components.SceneController;
+import it.italiandudes.idl.logger.Logger;
 import it.italiandudes.iiot_smartroom.javafx.scene.SceneMainMenu;
 import it.italiandudes.iiot_smartroom.javafx.utils.Settings;
 import it.italiandudes.iiot_smartroom.javafx.utils.ThemeHandler;
 import it.italiandudes.iiot_smartroom.utils.Defs;
-import it.italiandudes.idl.javafx.alert.ErrorAlert;
-import it.italiandudes.idl.javafx.components.SceneController;
-import it.italiandudes.idl.logger.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
