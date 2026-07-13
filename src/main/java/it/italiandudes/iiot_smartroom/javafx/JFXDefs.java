@@ -59,9 +59,6 @@ public final class JFXDefs {
         public static final class Image {
             private static final String IMAGE_DIR = Defs.Resources.PROJECT_RESOURCES_ROOT + "image/";
             public static final String IMAGE_LOGO = IMAGE_DIR + "logo.png";
-            public static final String IMAGE_FILE_EXPLORER = IMAGE_DIR+"file-explorer.png";
-            public static final String IMAGE_PLAY = IMAGE_DIR + "play.png";
-            public static final String IMAGE_STOP = IMAGE_DIR + "stop.png";
         }
 
     }
