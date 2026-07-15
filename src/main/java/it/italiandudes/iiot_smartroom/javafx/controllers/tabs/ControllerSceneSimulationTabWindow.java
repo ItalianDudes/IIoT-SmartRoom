@@ -34,7 +34,7 @@ public final class ControllerSceneSimulationTabWindow {
     // Initialize
     @FXML
     private void initialize() {
-        toggleButtonOpen.setSelected(DirectorVariables.IS_DOOR_OPEN);
+        toggleButtonOpen.setSelected(DirectorVariables.IS_WINDOW_OPEN);
         JFXUtils.startVoidServiceTask(() -> {
             while (!configurationComplete) Thread.onSpinWait();
             boolean lastSensorState = dcm.isWindowOpen();
